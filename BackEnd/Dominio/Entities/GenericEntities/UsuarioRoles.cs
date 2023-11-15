@@ -5,5 +5,4 @@ namespace Dominio.Entities;
         public Usuario ? Usuarios { get; set; }
         public int RolId { get; set; }
         public Rol ? Roles { get; set; }
-        
     }

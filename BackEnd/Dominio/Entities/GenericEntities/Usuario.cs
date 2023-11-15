@@ -8,5 +8,6 @@ namespace Dominio.Entities;
         public ICollection<Rol> ? Roles { get; set; } = new HashSet<Rol>();
         public ICollection<UsuarioRoles> ? UsuarioRoles { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();
-
+        
+        
 }

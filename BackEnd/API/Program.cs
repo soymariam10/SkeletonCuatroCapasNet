@@ -45,13 +45,12 @@ builder.Services.AddAuthorization(opts =>{
         .Build();
 });
 
-//habilitamos la conexion a la base de datos 
+//inyectamos la conexion a la base de datos 
 builder.Services.AddDbContext<DbAppContext>(options =>
 {
     string ? connectionString = builder.Configuration.GetConnectionString("ConexMysql");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

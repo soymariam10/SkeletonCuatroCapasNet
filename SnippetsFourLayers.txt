@@ -1,0 +1,204 @@
+{
+    "string-Entity": {
+    "prefix": "string-Entity",
+    "body": [
+        "public string ${1:NombreClase} { get; set; }"
+    ],
+    "description": "atributo tipo string"
+    },
+
+    "int-Entity": {
+    "prefix": "int-Entity",
+    "body": [
+        "public int ${1:NombreClase} { get; set; }"
+    ],
+    "description": "atributo tipo int"
+    },
+
+    "float-Entity": {
+    "prefix": "float-Entity",
+    "body": [
+        "public float ${1:NombreClase} { get; set; }"
+    ],
+    "description": "atributo tipo float"
+    },
+
+    "double-Entity": {
+    "prefix": "double-Entity",
+    "body": [
+        "public double ${1:NombreClase} { get; set; }"
+    ],
+    "description": "atributo tipo double"
+    },
+
+    "decimal-Entity": {
+    "prefix": "decimal-Entity",
+    "body": [
+        "public decimal ${1:NombreClase} { get; set; }"
+    ],
+    "description": "atributo tipo decimal"
+    },
+
+    "date-Entity": {
+    "prefix": "date-Entity",
+    "body": [
+        "public date ${1:NombreClase} { get; set; }"
+    ],
+    "description": "atributo tipo date"
+    },
+
+    "DateTime-Entity": {
+    "prefix": "DateTime-Entity",
+    "body": [
+        "public DateTime ${1:NombreClase} { get; set; }"
+    ],
+    "description": "atributo tipo DateTime"
+    },
+
+
+    "timeSpan-Entity": {
+        "prefix": "timeSpan-Entity",
+        "body": [
+            "public timeSpan ${1:NombreClase} { get; set; }"
+        ],
+        "description": "atributo tipo timeSpan"
+    },
+
+	"js-cadena-conexion": {
+		"prefix": "js-cadena-conexion",
+		"body": [
+			"\"ConnectionStrings\": {",
+			"\t\"ConexSqlServer\": \"Data Source=localhost\\\\\\sqlexpress;Initial Catalog=dB;Integrate Security=True\",",
+			"\t\"ConexMysql\": \"server=${1:localhost};user=${2:root};password=${3:contrasena};database=${4:nombreDb}\"",
+			"},"
+		],
+		"description": "cadena de conexion a la base de datos desde los json"
+    },	
+
+
+    "DbContext": {
+        "prefix": "DbContext",
+        "body": [
+            "using Dominio.Entities;",
+            "using Microsoft.EntityFrameworkCore;",
+            "",
+            "namespace Persistencia.Data;",
+            "    public class DbAppContext : DbContext{" ,
+            "        public DbAppContext(DbContextOptions<DbAppContext> options) : base(options)",
+            "        {",
+            "        }"
+        ],
+        "description": "creacion del dbContext que permite la interaccion con la bd"
+    },
+
+    "DbSet-public": {
+        "prefix": "DbSet-public",
+        "body": [
+            "public DbSet<${1:NombreClase}> ? ${2:NombreTablaBd} { get; set; } = null!;"
+
+        ],
+        "description": "definición de una clase de contexto de base de datos"
+    },
+
+    "OnModelCreating-protected": {
+        "prefix": "OnModelCreating-protected",
+        "body": [
+            "protected override void OnModelCreating(ModelBuilder modelBuilder){"
+            "base.OnModelCreating(modelBuilder);"
+            "modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());"
+        "}"
+
+        ],
+        "description": "metodo para configurar el modelo de datos"
+    },
+
+    "inyectarElDbContextalProgram": {
+        "prefix": "inyectarElDbContextalProgram",
+        "body": [
+            "builder.Services.AddDbContext<DbAppContext>(options =>"
+            "{"
+            "    string ? connectionString = builder.Configuration.GetConnectionString(\"ConexMysql\");"
+            "    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));"
+            "});"
+
+        ],
+        "description": "metodo para configurar el modelo de datos"
+    },
+
+    "ICollection": {
+        "prefix": "coleccion",
+        "body": [
+            "public ICollection<${1:Entidad}> ${2:Propiedad} { get; set; }"
+        ],
+        "description": "cardinalidad entre entidades, coleccion"
+    },
+
+    "uno": {
+        "prefix": "uno",
+        "body": [
+            "public ${1:Entidad}  ${2:Propiedad} { get; set; }"
+        ],
+        "description": "cardinalidad entre entidades, uno"
+    },
+
+    "configuracion-base": {
+        "prefix": "configuracion-base",
+        "body": [
+           "using Dominio.Entities;",
+			"using Microsoft.EntityFrameworkCore;",
+			"using Microsoft.EntityFrameworkCore.Metadata;",
+			"using Microsoft.EntityFrameworkCore.Metadata.Builders;",
+			"",
+			"namespace Persistencia.Data.Configuration;",
+			"public class ${1:Nombre}Configuration : IEntityTypeConfiguration<${1:Nombre}>",
+			"{",
+				"\tpublic void Configure(EntityTypeBuilder<${1:Nombre}> builder)",
+				"\t{",
+					"",
+					"\t\tbuilder.ToTable(\"${1:Nombre}\");",
+			"",
+					"\t\tbuilder.Property(p => p.Id)",
+						"\t\t.HasAnnotation(\"MySql:ValueGenerationStrategy\", MySqlValueGenerationStrategy.IdentityColumn)",
+						"\t\t.HasColumnName(\"Id${1:Nombre}\")",
+						"\t\t.HasColumnType(\"int\")",
+						"\t\t.IsRequired();",
+            	"\t}",
+			"}",
+		],
+		"description": "Snippet para generar la base de los archivos de configuracion"
+	},
+    
+    "property-int": {
+		"prefix": "property-int",
+		"body": [
+			"builder.Property(p => p.${1:Nombre})",
+            "\t.HasColumnName(\"${1:Nombre}\")",
+            "\t.HasColumnType(\"int\")",
+            "\t.IsRequired();"
+		],
+		"description": "Snippet para generar una propiedad de configuracion int"
+	},
+
+    "property-varchar": {
+		"prefix": "property-varchar",
+		"body": [
+			"builder.Property(p => p.${1:Nombre})",
+            "\t.HasColumnName(\"${1:Nombre}\")",
+            "\t.HasColumnType(\"varchar\")",
+			"\t.HasMaxLength(${2:CantidadDeCaracteres})",
+            "\t.IsRequired();"
+		],
+		"description": "Snippet para generar una propiedad de configuracion varchar"
+	},
+
+	"property-DateTime": {
+		"prefix": "property-DateTime",
+		"body": [
+			"builder.Property(p => p.${1:Nombre})",
+            "\t.HasColumnName(\"${1:Nombre}\")",
+            "\t.HasColumnType(\"DateTime\")",
+            "\t.IsRequired();"
+		],
+		"description": "Snippet para generar una propiedad de configuracion DateTime"
+	},
+}
